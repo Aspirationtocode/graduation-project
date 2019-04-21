@@ -1,30 +1,19 @@
-import * as express from "express";
 import * as mongoose from "mongoose";
-import { serverConfig } from "./configs/server/config";
-import { mongoDBConfig } from "./configs/mongodb/config";
+import "reflect-metadata";
+import { mongoDBConfig } from "../configs/mongodb/config";
+import { startServer } from "./startServer";
 
-const app = express();
+const mondoDBConnectionURI = `mongodb+srv://${mongoDBConfig.USERNAME}:${
+  mongoDBConfig.PASSWORD
+}@cluster0-pv9q5.mongodb.net/${mongoDBConfig.DATABASE_NAME}?retryWrites=true`;
 
 mongoose
-  .connect(
-    `mongodb+srv://${mongoDBConfig.USERNAME}:${
-      mongoDBConfig.PASSWORD
-    }@cluster0-pv9q5.mongodb.net/${
-      mongoDBConfig.DATABASE_NAME
-    }?retryWrites=true`,
-    {
-      useNewUrlParser: true
-    }
-  )
+  .connect(mondoDBConnectionURI, {
+    useNewUrlParser: true
+  })
   .then(() => {
-    app.listen(serverConfig.SERVER_PORT, () => {
-      console.log(`App server listening on ports ${serverConfig.SERVER_PORT}`);
-    });
+    startServer();
   })
   .catch(error => {
     console.log(error);
   });
-
-app.get("/", (request, response) => {
-  response.send("Hello!");
-});

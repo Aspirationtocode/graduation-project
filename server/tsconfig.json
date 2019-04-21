@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
-    "lib": ["es6"],
+    "lib": ["es7", "esnext.asynciterable"],
     "module": "commonjs",
     "noLib": false,
     "outDir": "./dist",
@@ -9,12 +9,14 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "target": "es6",
+    "target": "es2016",
     "noUnusedParameters": false,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
-    "noImplicitThis": true
-  },
-  "include": ["./src"]
+    "noImplicitThis": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
+    "emitDecoratorMetadata": true
+  }
 }
