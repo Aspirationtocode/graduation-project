@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
-    "lib": ["es7", "esnext.asynciterable"],
+    "jsx": "react",
+    "lib": ["es7", "esnext.asynciterable", "dom"],
     "module": "commonjs",
     "noLib": false,
-    "outDir": "./dist",
     "preserveConstEnums": true,
     "skipLibCheck": true,
     "sourceMap": true,

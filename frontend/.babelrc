@@ -1,0 +1,14 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": ["last 2 versions", "chrome >= 60"]
+        },
+        "exclude": ["transform-regenerator"]
+      }
+    ],
+    "@babel/preset-react"
+  ]
+}
