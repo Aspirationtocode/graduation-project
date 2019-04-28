@@ -11,9 +11,9 @@ export const config: Configuration = {
   },
 
   output: {
-    filename: "[name].js",
+    filename: "[name].bundle.js",
     path: paths.frontend.DIST,
-    publicPath: "/"
+    publicPath: "./"
   },
 
   mode: Environment.isDev ? "development" : "production",
