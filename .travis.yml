@@ -17,4 +17,5 @@ deploy:
   provider: heroku
   api_key:
     secure: "bc5aeb12-ab8a-4ccc-939e-e0340eff0be2"
+  app: graduation-project-server
   
