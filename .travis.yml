@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - "node"
+script:
+  - npm run frontend:build
+cache:
+  directories:
+    - node_modules
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $github_token
+  local_dir: frontend/dist
+  on:
+    branch: master
