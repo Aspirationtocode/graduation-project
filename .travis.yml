@@ -13,3 +13,8 @@ deploy:
   local_dir: frontend/dist
   on:
     branch: master
+
+  provider: heroku
+  api_key:
+    secure: "90e2b613-4917-4b6c-9511-6993a102a94b"
+  
