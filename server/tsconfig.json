@@ -19,5 +19,5 @@
     "strictPropertyInitialization": false,
     "emitDecoratorMetadata": true
   },
-  "include": ["../common/*"]
+  "include": ["../common/*", "./src"]
 }

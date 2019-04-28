@@ -7,7 +7,8 @@
     "server": "nodemon",
     "frontend": "cross-env MODE=development webpack --config ./frontend/webpack.config.ts --watch",
     "frontend:build": "cross-env MODE=production webpack --config ./frontend/webpack.config.ts -p",
-    "server:build": "cross-env rimraf ./server/dist && tsc -p server/tsconfig.json"
+    "server:build": "cross-env rimraf ./server/dist && tsc -p server/tsconfig.json",
+    "heroku-postbuild": "npm run server:build"
   },
   "repository": {
     "type": "git",
