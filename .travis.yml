@@ -1,21 +1,18 @@
 language: node_js
 node_js:
-  - "node"
+- node
 script:
-  - npm run frontend:build
+- npm run frontend:build
 cache:
   directories:
-    - node_modules
+  - node_modules
 deploy:
-  provider: pages
+  provider: heroku
   skip_cleanup: true
-  github_token: $github_token
+  github_token: "$github_token"
   local_dir: frontend/dist
   on:
     branch: master
-
-  provider: heroku
   api_key:
-    secure: "bc5aeb12-ab8a-4ccc-939e-e0340eff0be2"
+    secure: n5Mn+/HgMH4oiKvCYncqMFIvQfQZFxoEMnjneTzKLgUf0ackdolWfLZTrGRPqnL72jAr0+NMxmTuemTdFQaqOmITL8mhntE2LqBOcDYDbZEJh6qIISYjUkiradLbAH6K5emY9S7D5mYRSoVYwIu1aS3oFfIbccpgVjuroriiUb+K2mSbyju5Gq/jBvGBpMJ6JBD2zelWR/B+bjRlgsPD9oUBQROVM6DXQZs3MdLJUUcBi2z+iRH2tZlXVG4roGu+LeGDrpOg8gpHujj9w+5X73hETRO5vTSx2VPYfpOl9vbJ7IB/gXOcpCj2KUxsfd8Ki1UaqtSjdypKQC3JfByRYYdrwxPWUHqA9LfLM05+sS6spVQiJtWWtf/SccndUCeiuFnP8tjQgKFolt9O2M32Nb5q5VRWEX/HSwZ6uaCZq6JtGuFl8WWMHRGfx1IzwFZzOpKVVU0caMCkbpxg89SmqCawffdtJac/RTygUArrCyQsYcO+VSk3nFnvlSFFlgwcz5vc6jJ4lzHWWM/1Y2njA+LpJ1gN+w6/dqsd/d/DNXo9XxrvkxGxyoDKTZp+7FmzxO+CPlFZMwZPbMXzVJzMaLLikxj5PcN2BIsR1LWvcwKdRcIxtgSugUsrY325heAjvUjfAcCxhO3j0mPpJYLlyFiPMzeB/TWrmKnAwbhkxwo=
   app: graduation-project-server
-  
