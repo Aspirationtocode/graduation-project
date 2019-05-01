@@ -13,7 +13,7 @@ export const config: Configuration = {
   output: {
     filename: "[name].bundle.js",
     path: paths.frontend.DIST,
-    publicPath: "./"
+    publicPath: ""
   },
 
   mode: Environment.isDev ? "development" : "production",
@@ -23,6 +23,16 @@ export const config: Configuration = {
   plugins: webpackPlugins,
 
   resolve: {
-    extensions: [".ts", ".tsx", ".js", ".jsx"]
+    extensions: [".ts", ".tsx", ".js", ".jsx", ".styl"],
+    alias: {
+      src: paths.frontend.SOURCE
+    }
+  },
+
+  devServer: {
+    contentBase: paths.frontend.DIST,
+    compress: true,
+    port: 3000,
+    historyApiFallback: true
   }
-};
+} as Configuration;

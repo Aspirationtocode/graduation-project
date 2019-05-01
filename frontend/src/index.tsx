@@ -1,6 +1,6 @@
-import { render } from "react-dom";
-import * as React from "react";
+import "./styles/common";
+import { initializeInject, InjectionMap, MainRepository } from "modelsApi";
+import renderRoot from "src/renderRoot";
+initializeInject(new InjectionMap([[MainRepository, new MainRepository()]]));
 
-const rootContainer = document.getElementById("root");
-
-render(<h1>Hello!</h1>, rootContainer);
+renderRoot();
