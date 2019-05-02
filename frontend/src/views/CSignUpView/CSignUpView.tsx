@@ -6,29 +6,37 @@ import {
   CFormFields,
   CFormButtons
 } from "src/components/layoutComponents/CForm/CForm";
-import { TextField, Button } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { CInput } from "src/components/lib/CInput/CInput";
 
-const css = classNames.bind(require("./CSignInView.styl"));
+const css = classNames.bind(require("./CSignUpView.styl"));
 
-interface CSignInViewState {
+interface CSignUpViewState {
   username: string;
   password: string;
+  fullName: string;
 }
 
 @observer
-export class CSignInView extends React.Component<{}, CSignInViewState> {
+export class CSignUpView extends React.Component<{}, CSignUpViewState> {
   state = {
     username: "",
-    password: ""
+    password: "",
+    fullName: ""
   };
 
   render() {
-    const { username, password } = this.state;
+    const { fullName, username, password } = this.state;
     return (
-      <div className={css("signin")}>
-        <CForm title="Sign In">
+      <div className={css("signup")}>
+        <CForm title="Sign Up">
           <CFormFields>
+            <CInput
+              fullWidth={true}
+              label="Full Name"
+              value={fullName}
+              handleChange={this.handleFullNameChange}
+            />
             <CInput
               fullWidth={true}
               label="Username"
@@ -45,7 +53,7 @@ export class CSignInView extends React.Component<{}, CSignInViewState> {
           </CFormFields>
           <CFormButtons>
             <Button variant="contained" color="secondary">
-              Login
+              Sign Up
             </Button>
           </CFormButtons>
         </CForm>
@@ -62,6 +70,12 @@ export class CSignInView extends React.Component<{}, CSignInViewState> {
   private handlePasswordChange = (password: string) => {
     this.setState({
       password
+    });
+  };
+
+  private handleFullNameChange = (fullName: string) => {
+    this.setState({
+      fullName
     });
   };
 }

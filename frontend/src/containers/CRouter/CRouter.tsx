@@ -4,7 +4,7 @@ import { Routing } from "src/routing/routing";
 import { syncHistoryWithStore } from "mobx-react-router";
 import { Router } from "react-router";
 import { inject } from "modelsApi";
-import { CMainLayout } from "src/layouts/CMainLayout/CMainLayout";
+import { CMainLayout } from "src/components/layoutComponents/CMainLayout/CMainLayout";
 
 interface CRouterProps {}
 

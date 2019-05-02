@@ -8,7 +8,6 @@ import * as graphqlHTTP from "express-graphql";
 const app = express();
 
 app.use(bodyParser.json());
-
 export function startServer() {
   buildSchema({
     resolvers: [UserResolver]

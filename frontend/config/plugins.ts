@@ -1,8 +1,9 @@
-import { Plugin } from "webpack";
+import { Plugin, DefinePlugin } from "webpack";
 import * as HtmlWebpackPlugin from "html-webpack-plugin";
 import { default as CleanWebpackPlugin } from "clean-webpack-plugin";
 import { Chunks } from "./types";
 import { paths } from "../../common/paths";
+import { FRONTEND_ENV_CONFIG } from "./environmentConfig";
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 export const webpackPlugins: Plugin[] = [
@@ -15,5 +16,8 @@ export const webpackPlugins: Plugin[] = [
     filename: "[name].css",
     chunkFilename: "[id].css"
   }),
-  new CleanWebpackPlugin()
+  new CleanWebpackPlugin(),
+  new DefinePlugin({
+    FRONTEND_ENV_CONFIG: JSON.stringify(FRONTEND_ENV_CONFIG)
+  })
 ];
