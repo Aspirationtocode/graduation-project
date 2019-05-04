@@ -3,6 +3,7 @@ import JssProvider from "react-jss/lib/JssProvider";
 import * as React from "react";
 import { create } from "jss";
 import { createGenerateClassName, jssPreset } from "@material-ui/core/styles";
+import { SnackbarProvider } from "notistack";
 
 import "./styles/common";
 import { CRouter } from "src/containers/CRouter/CRouter";
@@ -17,7 +18,15 @@ const rootContainer = document.getElementById("root");
 
 const entryComponent = (
   <JssProvider jss={jss} generateClassName={generateClassName}>
-    <CRouter />
+    <SnackbarProvider
+      maxSnack={3}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "left"
+      }}
+    >
+      <CRouter />
+    </SnackbarProvider>
   </JssProvider>
 );
 

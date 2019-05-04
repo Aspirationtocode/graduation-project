@@ -25,7 +25,8 @@ export const config: Configuration = {
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx", ".styl"],
     alias: {
-      src: paths.frontend.SOURCE
+      src: paths.frontend.SOURCE,
+      server: paths.common.SERVER
     }
   },
 
@@ -33,6 +34,7 @@ export const config: Configuration = {
     contentBase: paths.frontend.DIST,
     compress: true,
     port: 3000,
-    historyApiFallback: true
+    historyApiFallback: true,
+    headers: { "Access-Control-Allow-Origin": "*" }
   }
 } as Configuration;

@@ -17,7 +17,7 @@ export class CForm extends React.Component<CFormWrapperProps> {
       <Paper elevation={1} className={css("form")}>
         <div className={css("form-header")}>
           <Typography variant="h6">{title}</Typography>
-          {isLoading && <CircularProgress />}
+          {isLoading && <CircularProgress size={20} />}
         </div>
         <div
           className={css("form-content", {

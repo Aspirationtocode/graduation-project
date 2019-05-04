@@ -35,8 +35,9 @@
     "emitDecoratorMetadata": true,
     "baseUrl": "",
     "paths": {
-      "src/*": ["src/*"]
+      "src/*": ["src/*"],
+      "server/*": ["../server/*"]
     }
   },
-  "include": ["./"]
+  "include": ["./", "server/*"]
 }

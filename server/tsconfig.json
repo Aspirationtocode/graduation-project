@@ -19,5 +19,10 @@
     "strictPropertyInitialization": false,
     "emitDecoratorMetadata": true
   },
-  "include": ["../common/*", "./src"]
+  "baseUrl": "",
+  "paths": {
+    "src/*": ["src/*"],
+    "api/*": ["api/*"]
+  },
+  "include": ["./", "../common/*"]
 }

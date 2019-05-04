@@ -6,8 +6,11 @@ import {
   CFormFields,
   CFormButtons
 } from "src/components/layoutComponents/CForm/CForm";
-import { TextField, Button } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { CInput } from "src/components/lib/CInput/CInput";
+import { inject } from "modelsApi";
+import { AuthRepository } from "src/core/repositories/AuthRepository/authRepository";
+import { withSnackbar, WithSnackbarProps } from "notistack";
 
 const css = classNames.bind(require("./CSignInView.styl"));
 
@@ -16,11 +19,14 @@ interface CSignInViewState {
   password: string;
 }
 
+interface CSignInViewProps extends WithSnackbarProps {}
+
 @observer
-export class CSignInView extends React.Component<{}, CSignInViewState> {
+class CSignInView extends React.Component<CSignInViewProps, CSignInViewState> {
+  @inject private authRepository: AuthRepository;
   state = {
-    username: "",
-    password: ""
+    username: "aspiretocode",
+    password: "VeryStrongPassword"
   };
 
   render() {
@@ -44,7 +50,12 @@ export class CSignInView extends React.Component<{}, CSignInViewState> {
             />
           </CFormFields>
           <CFormButtons>
-            <Button variant="contained" color="secondary">
+            <Button
+              variant="contained"
+              color="secondary"
+              disabled={!this.isValid()}
+              onClick={this.onSubmit}
+            >
               Login
             </Button>
           </CFormButtons>
@@ -52,6 +63,30 @@ export class CSignInView extends React.Component<{}, CSignInViewState> {
       </div>
     );
   }
+
+  private onSubmit = () => {
+    const { username, password } = this.state;
+    this.authRepository
+      .signIn({ username, password })
+      .then(response => {
+        this.props.enqueueSnackbar(
+          `User with username: ${username} successfully signed in!`,
+          {
+            variant: "success"
+          }
+        );
+      })
+      .catch(err => {
+        this.props.enqueueSnackbar(err.message, {
+          variant: "error"
+        });
+      });
+  };
+
+  private isValid = () => {
+    const { username, password } = this.state;
+    return Boolean(username && password);
+  };
 
   private handleUsernameChange = (username: string) => {
     this.setState({
@@ -65,3 +100,7 @@ export class CSignInView extends React.Component<{}, CSignInViewState> {
     });
   };
 }
+
+const withSnackbarComponent = withSnackbar(CSignInView);
+
+export { withSnackbarComponent as CSignInView };

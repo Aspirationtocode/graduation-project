@@ -1,16 +1,20 @@
 import * as express from "express";
-import { serverConfig } from "../configs/server/config";
 import bodyParser = require("body-parser");
 import { buildSchema } from "type-graphql";
-import { UserResolver } from "./models/user/resolver";
 import * as graphqlHTTP from "express-graphql";
+import { serverConfig } from "../configs/server/config";
+import { resolvers } from "./resolvers";
+const cors = require("cors");
 
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
+
 export function startServer() {
   buildSchema({
-    resolvers: [UserResolver]
+    resolvers,
+    validate: false
   })
     .then(schema => {
       app.use(

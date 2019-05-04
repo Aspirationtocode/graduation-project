@@ -1,28 +1,40 @@
-import { ObjectType, ID, Field, InputType } from "type-graphql";
+import { ObjectType, ID, Field } from "type-graphql";
 import { Typegoose, prop } from "typegoose";
 
+interface UserBase {
+  id: string;
+  username: string;
+  fullName: string;
+  password?: string;
+}
+
 @ObjectType("User")
-export class User extends Typegoose {
+export class User implements UserBase {
   @Field(type => ID)
-  @prop()
   id: string;
 
   @Field({ nullable: false })
-  @prop()
   username: string;
 
   @Field({ nullable: false })
+  fullName: string;
+
   @prop()
   password?: string;
 }
 
-export const UserModel = new User().getModelForClass(User);
+class UserTypegoose extends Typegoose implements UserBase {
+  @prop()
+  id: string;
 
-@InputType()
-export class SignUpInput {
-  @Field()
+  @prop()
   username: string;
 
-  @Field()
-  password: string;
+  @prop()
+  fullName: string;
+
+  @prop()
+  password?: string;
 }
+
+export const UserModel = new UserTypegoose().getModelForClass(User);
