@@ -6,7 +6,7 @@ import {
   CFormFields,
   CFormButtons
 } from "src/components/layoutComponents/CForm/CForm";
-import { Button } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 import { CInput } from "src/components/lib/CInput/CInput";
 import { inject } from "modelsApi";
 import { SignUpRepository } from "src/core/repositories/SignUpRepository/signUpRepository";
