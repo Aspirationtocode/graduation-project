@@ -3,6 +3,7 @@ import { Auth__SignIn_Request, Auth__SignIn_Response } from "./types";
 import { User, UserModel } from "../../models/user/types";
 import { JwtModule } from "../../jwt/jwtModule";
 import { ModelHelpers } from "../../models/modelHelpers";
+import { AuthError } from "../../errors/modules/authError";
 
 @Resolver()
 export class AuthResolver {
@@ -16,7 +17,10 @@ export class AuthResolver {
     })
       .then(user => {
         if (!user) {
-          throw new Error(`No user with username ${username}`);
+          throw new AuthError(
+            AuthError.Status.NO_SUCH_USER,
+            `No user with username ${username}`
+          );
         }
         const isPasswordsMatch = user.password === signInRequest.password;
         if (isPasswordsMatch) {
@@ -37,11 +41,17 @@ export class AuthResolver {
             throw new Error("Something go wrong");
           }
         } else {
-          throw new Error("Sorry, wrong credentials");
+          throw new AuthError(
+            AuthError.Status.INVALID_CREDENTIALS,
+            "Sorry, wrong credentials"
+          );
         }
       })
       .catch(error => {
-        throw new Error(`Invalid credentials`);
+        throw new AuthError(
+          AuthError.Status.NO_SUCH_USER,
+          `No user with username ${username}`
+        );
       });
   }
 }

@@ -11,6 +11,7 @@ import { CInput } from "src/components/lib/CInput/CInput";
 import { inject } from "modelsApi";
 import { AuthRepository } from "src/core/repositories/AuthRepository/authRepository";
 import { withSnackbar, WithSnackbarProps } from "notistack";
+import { BaseError } from "server/src/errors/baseError";
 
 const css = classNames.bind(require("./CSignInView.styl"));
 
@@ -76,8 +77,8 @@ class CSignInView extends React.Component<CSignInViewProps, CSignInViewState> {
           }
         );
       })
-      .catch(err => {
-        this.props.enqueueSnackbar(err.message, {
+      .catch((err: BaseError) => {
+        this.props.enqueueSnackbar(err.description, {
           variant: "error"
         });
       });

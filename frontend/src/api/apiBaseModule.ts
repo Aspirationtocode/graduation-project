@@ -52,12 +52,8 @@ export abstract class ApiBaseModule {
         return response;
       })
       .catch(response => {
-        const errorMessage = this.getErrorMessage(response);
-        if (errorMessage) {
-          throw new Error(this.getErrorMessage(response));
-        }
-
-        throw new Error("Something wrong happened");
+        const errorMessage = this.getError(response);
+        return Promise.reject(errorMessage);
       });
   }
 
@@ -65,12 +61,12 @@ export abstract class ApiBaseModule {
     return (response.data.data as any)[name] as T;
   }
 
-  private getErrorMessage(response: AxiosResponse) {
+  private getError(response: AxiosResponse) {
     const r: any = response;
 
     const { errors } = r && r.response && r.response.data;
     if (errors && errors[0]) {
-      return errors[0].message;
+      return JSON.parse(errors[0].message);
     }
     return null;
   }
