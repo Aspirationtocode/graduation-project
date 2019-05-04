@@ -4,14 +4,15 @@ enum Mode {
 }
 
 export interface PROCESS_ENV {
-  mode?: Mode;
+  MODE?: Mode;
 }
 
 const env: PROCESS_ENV = process.env;
+console.log(env.MODE);
 
-console.log(env.mode, env.mode === "production");
+console.log(env.MODE, env.MODE === "production");
 
 export module Environment {
-  export const isProd = env.mode === "production";
-  export const isDev = env.mode === "development";
+  export const isProd = env.MODE === "production";
+  export const isDev = env.MODE === "development";
 }
