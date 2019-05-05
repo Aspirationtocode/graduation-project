@@ -8,11 +8,8 @@ export interface PROCESS_ENV {
 }
 
 const env: PROCESS_ENV = process.env;
-console.log(env.MODE);
-
-console.log(env.MODE, env.MODE === "production");
 
 export module Environment {
-  export const isProd = env.MODE === "production";
-  export const isDev = env.MODE === "development";
+  export const isProd = env.MODE === Mode.PRODUCTION;
+  export const isDev = env.MODE === Mode.DEVELOPMENT;
 }
