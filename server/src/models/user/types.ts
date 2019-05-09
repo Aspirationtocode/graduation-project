@@ -5,11 +5,13 @@ interface UserBase {
   id: string;
   username: string;
   fullName: string;
+  pub: string;
+  sec: string;
   password?: string;
 }
 
 @ObjectType("User")
-export class User implements UserBase {
+class UserGraphql implements UserBase {
   @Field(type => ID)
   id: string;
 
@@ -19,11 +21,17 @@ export class User implements UserBase {
   @Field({ nullable: false })
   fullName: string;
 
+  @Field({ nullable: false })
+  pub: string;
+
+  @Field({ nullable: false })
+  sec: string;
+
   @prop()
   password?: string;
 }
 
-class UserTypegoose extends Typegoose implements UserBase {
+class User extends Typegoose implements UserBase {
   @prop()
   id: string;
 
@@ -34,7 +42,16 @@ class UserTypegoose extends Typegoose implements UserBase {
   fullName: string;
 
   @prop()
+  pub: string;
+
+  @prop()
+  sec: string;
+
+  @prop()
   password?: string;
 }
 
-export const UserModel = new UserTypegoose().getModelForClass(User);
+export { UserGraphql as User };
+export { User as UserTypegoose };
+
+export const UserModel = new User().getModelForClass(User);

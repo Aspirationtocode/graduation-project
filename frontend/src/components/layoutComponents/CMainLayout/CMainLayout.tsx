@@ -5,31 +5,47 @@ import { CProtectedRoute } from "src/containers/CRouter/components/CProtectedRou
 import { CSignInView } from "src/views/CSignInView/CSignInView";
 import { CHeader } from "src/components/business/CHeader/CHeader";
 import { CSignUpView } from "src/views/CSignUpView/CSignUpView";
+import { CLogins } from "src/components/business/CLogins/CLogins";
+import { CModalDemonstrator } from "src/components/core/CModalDemonstrator/CModalDemonstrator";
 
 const css = classNames.bind(require("./CMainLayout.styl"));
 
 export class CMainLayout extends React.Component {
   render() {
     return (
-      <div className={css("main-layout")}>
-        <CHeader />
-        <div className={css("main-layout__content")}>{this.renderRoutes()}</div>
-      </div>
+      <React.Fragment>
+        {this.renderCoreComponents()}
+        <div className={css("main-layout")}>
+          <CHeader />
+
+          <div className={css("main-layout__content")}>
+            {this.renderRoutes()}
+          </div>
+        </div>
+      </React.Fragment>
     );
   }
 
   private renderRoutes() {
     return (
       <Switch>
+        <CProtectedRoute path="/logins" component={CLogins} />
         <Route path="/signin" component={CSignInView} />
         <Route path="/signup" component={CSignUpView} />
-        <CProtectedRoute
-          path="/"
-          render={props => {
-            return <h1>Root</h1>;
-          }}
-        />
+        <CProtectedRoute path="/" component={this.renderRedirect} />
       </Switch>
+    );
+  }
+
+  private renderRedirect = () => {
+    return <Redirect to="/logins" />;
+  };
+
+  private renderCoreComponents() {
+    return (
+      <React.Fragment>
+        <CModalDemonstrator />
+      </React.Fragment>
     );
   }
 }

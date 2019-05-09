@@ -78,9 +78,11 @@ class CSignInView extends React.Component<CSignInViewProps, CSignInViewState> {
         );
       })
       .catch((err: BaseError) => {
-        this.props.enqueueSnackbar(err.description, {
-          variant: "error"
-        });
+        if (err.description) {
+          this.props.enqueueSnackbar(err.description, {
+            variant: "error"
+          });
+        }
       });
   };
 

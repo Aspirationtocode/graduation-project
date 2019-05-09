@@ -17,8 +17,8 @@ export abstract class BaseStorage<StorageType extends string> {
 
   public setItem<T>(key: string, value: T) {
     const processedItem = this.isJSONValidValue(value)
-      ? value
-      : JSON.stringify(value);
+      ? JSON.stringify(value)
+      : value;
     if (this.storage) {
       this.storage.setItem(key, processedItem as string);
     }
@@ -31,7 +31,7 @@ export abstract class BaseStorage<StorageType extends string> {
       return null;
     }
 
-    const processedItem = this.isJSONValidValue(rawItem)
+    const processedItem = !this.isJSONValidValue(rawItem)
       ? JSON.parse(rawItem as string)
       : rawItem;
     return processedItem;

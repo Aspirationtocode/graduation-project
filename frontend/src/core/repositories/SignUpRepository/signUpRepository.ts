@@ -18,11 +18,13 @@ export class SignUpRepository extends CustomRepository<ModelTypes> {
   }
 
   public signUp(
-    request: SignUp__SignUp_Request
+    username: string,
+    password: string,
+    fullName: string
   ): Promise<SignUp__SignUp_Response> {
     this.isLoading = true;
     return this.signUpModule
-      .signUp(request)
+      .signUp(username, password, fullName)
       .then(response => {
         this.isLoading = false;
         this.routing.replace("/signin");

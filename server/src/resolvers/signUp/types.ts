@@ -10,6 +10,12 @@ export class SignUp__SignUp_Request {
   fullName: string;
 
   @Field({ nullable: false })
+  pub: string;
+
+  @Field({ nullable: false })
+  sec: string;
+
+  @Field({ nullable: false })
   password: string;
 }
 

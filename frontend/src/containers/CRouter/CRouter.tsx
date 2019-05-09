@@ -1,5 +1,5 @@
 import * as React from "react";
-import { createBrowserHistory, History, createHashHistory } from "history";
+import { History, createHashHistory } from "history";
 import { Routing } from "src/routing/routing";
 import { syncHistoryWithStore } from "mobx-react-router";
 import { Router } from "react-router";
@@ -13,8 +13,8 @@ export class CRouter extends React.Component<CRouterProps> {
   private history: History;
   constructor(props: CRouterProps) {
     super(props);
-    const browserHistory = createHashHistory();
-    this.history = syncHistoryWithStore(browserHistory, this.routing);
+    const hashHistory = createHashHistory();
+    this.history = syncHistoryWithStore(hashHistory, this.routing);
   }
 
   render() {

@@ -32,20 +32,54 @@ export class CForm extends React.Component<CFormWrapperProps> {
   }
 }
 
-export class CFormFields extends React.Component {
+interface CFormFieldsProps {
+  fieldsInRow?: number;
+}
+
+export class CFormFields extends React.Component<CFormFieldsProps> {
+  static defaultProps = {
+    fieldsInRow: 1
+  };
+
   render() {
-    return <div className={css("form-fields")}>{this.renderChildren()}</div>;
+    const { fieldsInRow } = this.props;
+    return (
+      <div
+        className={css("form-fields")}
+        style={{ gridTemplateColumns: `repeat(${fieldsInRow}, 1fr)` }}
+      >
+        {this.renderChildren()}
+      </div>
+    );
+  }
+
+  private splitArray(array: any[], size: number): any[] {
+    let resultArray = []; //массив в который будет выведен результат.
+    for (let i = 0; i < Math.ceil(array.length / size); i++) {
+      resultArray[i] = array.slice(i * size, i * size + size);
+    }
+    return resultArray;
+  }
+
+  private renderFormField(child: React.ReactNode, index: number) {
+    return (
+      <div className={css("form-field")} key={index}>
+        {child}
+      </div>
+    );
+  }
+
+  private renderFormFields(childrenArray: React.ReactNode[]) {
+    return childrenArray.map((child, index) => {
+      return this.renderFormField(child, index);
+    });
   }
 
   private renderChildren() {
-    const { children } = this.props;
-    return React.Children.toArray(children).map((child, index) => {
-      return (
-        <div className={css("form-field")} key={index}>
-          {child}
-        </div>
-      );
-    });
+    const { children, fieldsInRow } = this.props;
+    const childrenArray = React.Children.toArray(children);
+
+    return this.renderFormFields(childrenArray);
   }
 }
 

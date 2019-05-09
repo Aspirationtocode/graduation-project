@@ -1,7 +1,13 @@
 import { BaseStorage } from "src/core/storage/storage";
+import { User } from "server/src/models/user/types";
 
 enum SessionStorageKey {
-  JWT_TOKEN = "session-jwt-token"
+  USER_SESSION_DATA = "user-session-data"
+}
+
+interface UserSessionData {
+  token: string;
+  user: User;
 }
 
 export class SessionStorage extends BaseStorage<"sessionStorage"> {
@@ -10,11 +16,15 @@ export class SessionStorage extends BaseStorage<"sessionStorage"> {
     this.init("sessionStorage");
   }
 
-  public setJwtToken(token: string) {
-    this.setItem(SessionStorageKey.JWT_TOKEN, token);
+  public removeUserSessionData() {
+    this.removeItem(SessionStorageKey.USER_SESSION_DATA);
   }
 
-  public getJwtToken(): string | null {
-    return this.getItem<string>(SessionStorageKey.JWT_TOKEN);
+  public setUserSessionData(data: UserSessionData) {
+    this.setItem(SessionStorageKey.USER_SESSION_DATA, data);
+  }
+
+  public getUserSessionData(): UserSessionData {
+    return this.getItem<UserSessionData>(SessionStorageKey.USER_SESSION_DATA);
   }
 }

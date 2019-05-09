@@ -18,7 +18,9 @@ mutation {
       user {
         username,
         id,
-        fullName
+        fullName,
+        sec,
+        pub
       }
     }
   }

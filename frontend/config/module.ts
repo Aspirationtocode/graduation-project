@@ -1,11 +1,10 @@
-import { Module } from "webpack";
-import { paths } from "../../common/paths";
+import { Module, RuleSetRule } from "webpack";
 import { Environment } from "./environment";
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const { isProd } = Environment;
 
-const rules = [
+const rules: RuleSetRule[] = [
   {
     test: /\.(ts|tsx|js|jsx)$/,
     use: [
@@ -16,7 +15,6 @@ const rules = [
         loader: "ts-loader"
       }
     ],
-    include: paths.frontend.SOURCE,
     exclude: /node_modules/
   },
   {
@@ -39,7 +37,8 @@ const rules = [
       {
         loader: "stylus-loader"
       }
-    ]
+    ],
+    exclude: /node_modules/
   }
 ];
 

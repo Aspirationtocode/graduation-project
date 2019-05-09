@@ -9,7 +9,7 @@ export const config: Configuration = {
   entry: {
     [Chunks.INDEX]: paths.frontend.ENTRY
   },
-
+  target: "web",
   output: {
     filename: "[name].bundle.js",
     path: paths.frontend.DIST,

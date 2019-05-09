@@ -3,7 +3,7 @@ import { Auth__SignIn_Request, Auth__SignIn_Response } from "./types";
 import { User, UserModel } from "../../models/user/types";
 import { JwtModule } from "../../jwt/jwtModule";
 import { ModelHelpers } from "../../models/modelHelpers";
-import { AuthError } from "../../errors/modules/authError";
+import { AuthError } from "../../errors/errors";
 
 @Resolver()
 export class AuthResolver {
@@ -29,7 +29,9 @@ export class AuthResolver {
           const tokenUser: User = {
             username: pureUser.username,
             id: pureUser.id,
-            fullName: pureUser.fullName
+            fullName: pureUser.fullName,
+            pub: pureUser.pub,
+            sec: pureUser.sec
           };
           const token = JwtModule.generateToken(tokenUser);
           return {

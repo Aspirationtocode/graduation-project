@@ -4,31 +4,47 @@ import Toolbar from "@material-ui/core/Toolbar";
 import AppBar from "@material-ui/core/AppBar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import { NavLink } from "react-router-dom";
+import { Switch, Route, RouteComponentProps, Link } from "react-router-dom";
+import { inject } from "modelsApi";
+import { AuthRepository } from "src/core/repositories/AuthRepository/authRepository";
+import Drawer from "@material-ui/core/Drawer";
+import { IconButton } from "@material-ui/core";
+import MenuIcon from "@material-ui/icons/Menu";
+import { CLeftPanel } from "src/components/business/CLeftPanel/CLeftPanel";
+import { observer } from "mobx-react";
 const css = classNames.bind(require("./CHeader.styl"));
 
-interface NoAuthNavigationLink {
-  text: string;
-  link: string;
+interface CHeaderState {
+  isDrawerOpened: boolean;
 }
 
-export class CHeader extends React.Component {
-  private noAuthNavigationLinks: NoAuthNavigationLink[] = [
-    {
-      text: "Sign Up",
-      link: "/signup"
-    },
-    {
-      text: "Sign In",
-      link: "/signin"
-    }
-  ];
+@observer
+export class CHeader extends React.Component<{}, CHeaderState> {
+  state = {
+    isDrawerOpened: false
+  };
 
+  @inject private authRepository: AuthRepository;
   render() {
+    const { isDrawerOpened } = this.state;
+    const hasAuth = this.authRepository.hasAuth();
+
     return (
       <div className={css("header")}>
+        <Drawer
+          open={isDrawerOpened && hasAuth}
+          anchor={"left"}
+          onClose={this.toggleDrawer}
+        >
+          <CLeftPanel />
+        </Drawer>
         <AppBar position="static">
           <Toolbar className={css("header-toolbar")}>
+            {hasAuth && (
+              <IconButton color="inherit" onClick={this.toggleDrawer}>
+                <MenuIcon />
+              </IconButton>
+            )}
             <Typography variant="h6" color="inherit">
               Сorporate information system
             </Typography>
@@ -40,20 +56,58 @@ export class CHeader extends React.Component {
   }
 
   private renderNoAuthNavigation() {
-    const links = this.noAuthNavigationLinks.map((link, index) => {
-      return (
-        <NavLink
-          key={index}
-          to={link.link}
-          className={css("header-link")}
-          activeClassName={css("active")}
-        >
-          <Button variant="contained" size="small" color="secondary">
-            {link.text}
-          </Button>
-        </NavLink>
-      );
-    });
-    return <div className={css("header-links")}>{links}</div>;
+    return (
+      <Switch>
+        <Route
+          path={"/signup"}
+          render={(props: RouteComponentProps) => {
+            return (
+              <Link className={css("header-link")} to={"/signin"}>
+                <Button variant="contained" size="small" color="secondary">
+                  Sign In
+                </Button>
+              </Link>
+            );
+          }}
+        />
+        <Route
+          path={"/signin"}
+          render={(props: RouteComponentProps) => {
+            return (
+              <Link className={css("header-link")} to={"/signup"}>
+                <Button variant="contained" size="small" color="secondary">
+                  Sign Up
+                </Button>
+              </Link>
+            );
+          }}
+        />
+        <Route
+          path={"*"}
+          render={(props: RouteComponentProps) => {
+            return (
+              <Button
+                variant="contained"
+                size="small"
+                color="secondary"
+                onClick={this.logout}
+              >
+                Logout
+              </Button>
+            );
+          }}
+        />
+      </Switch>
+    );
   }
+
+  private toggleDrawer = () => {
+    this.setState(prevState => ({
+      isDrawerOpened: !prevState.isDrawerOpened
+    }));
+  };
+
+  private logout = () => {
+    this.authRepository.logout();
+  };
 }

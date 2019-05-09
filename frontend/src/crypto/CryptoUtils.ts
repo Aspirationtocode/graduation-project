@@ -10,4 +10,14 @@ export namespace CryptoUtils {
   export function generatePassword(ek: string) {
     return sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(ek));
   }
+
+  export function encrypt(plaintext: string, key: string): string {
+    return (sjcl.encrypt(key as any, plaintext, {
+      ks: 256
+    } as any) as any) as string;
+  }
+
+  export function decrypt(obj: any, key: string) {
+    return sjcl.decrypt(key, obj, { ks: 256 });
+  }
 }

@@ -25,6 +25,8 @@ export class SignUpResolver {
           user: {
             username: pureUser.username,
             fullName: pureUser.fullName,
+            sec: pureUser.sec,
+            pub: pureUser.pub,
             id: pureUser.id
           }
         };

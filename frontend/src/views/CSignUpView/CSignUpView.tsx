@@ -16,7 +16,7 @@ import { withSnackbar, WithSnackbarProps } from "notistack";
 
 const css = classNames.bind(require("./CSignUpView.styl"));
 
-type CSignUpViewState = SignUp__SignUp_Request;
+type CSignUpViewState = Partial<SignUp__SignUp_Request>;
 
 interface CSignUpViewProps extends WithSnackbarProps {}
 
@@ -79,7 +79,7 @@ class CSignUpView extends React.Component<CSignUpViewProps, CSignUpViewState> {
   private onSubmit = () => {
     const { username, password, fullName } = this.state;
     this.signUpRepository
-      .signUp({ username, password, fullName })
+      .signUp(username, password, fullName)
       .then(response => {
         this.props.enqueueSnackbar(`User ${username} successfully created`, {
           variant: "success"

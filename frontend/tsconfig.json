@@ -28,6 +28,7 @@
     "noUnusedParameters": false,
     "noUnusedLocals": false,
     "noFallthroughCasesInSwitch": true,
+    "strictNullChecks": false,
     "noImplicitAny": true,
     "noImplicitThis": true,
     "experimentalDecorators": true,

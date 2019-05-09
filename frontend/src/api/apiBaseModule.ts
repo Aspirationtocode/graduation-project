@@ -1,6 +1,6 @@
 import { default as axios, AxiosInstance, AxiosResponse } from "axios";
 import { ENV } from "src/environmentConfig";
-
+import { CommonError } from "server/src/errors/errors";
 interface QueryParams {
   query: string;
 }
@@ -52,8 +52,17 @@ export abstract class ApiBaseModule {
         return response;
       })
       .catch(response => {
-        const errorMessage = this.getError(response);
-        return Promise.reject(errorMessage);
+        const graphqlError = this.getGraphqlError(response);
+
+        if (graphqlError) {
+          return Promise.reject(JSON.parse(graphqlError));
+        } else {
+          const error = new CommonError(
+            CommonError.Status.SOMETHING_WRONG,
+            "Something wrong happened"
+          ).message;
+          return Promise.reject(JSON.parse(error));
+        }
       });
   }
 
@@ -61,13 +70,13 @@ export abstract class ApiBaseModule {
     return (response.data.data as any)[name] as T;
   }
 
-  private getError(response: AxiosResponse) {
+  private getGraphqlError(response: AxiosResponse) {
     const r: any = response;
-
-    const { errors } = r && r.response && r.response.data;
-    if (errors && errors[0]) {
-      return JSON.parse(errors[0].message);
+    if (r && r.response && r.response.data) {
+      const { errors } = r.response.data;
+      if (errors && errors[0]) {
+        return errors[0].message;
+      }
     }
-    return null;
   }
 }
