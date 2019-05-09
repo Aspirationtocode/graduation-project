@@ -89,6 +89,7 @@
     "jss": "^9.8.7",
     "mobx-react-router": "^4.0.7",
     "modelsApi": "git+https://github.com/apz77/modelsApi.git",
+    "swagger-ts-types": "git+https://github.com/apz77/swagger-ts-types.git",
     "mongoose": "^5.5.1",
     "notistack": "^0.8.2",
     "react": "^16.8.6",
