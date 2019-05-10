@@ -1,21 +1,13 @@
-import { CustomRepository, inject, MainRepository } from "modelsApi";
-import { ModelTypes } from "src/core/types/types";
+import { inject } from "src/utils/inject";
 import { SignUpModule } from "src/api/signUp/signUpModule";
-import { observable } from "mobx";
-import {
-  SignUp__SignUp_Request,
-  SignUp__SignUp_Response
-} from "server/src/resolvers/signUp/types";
+import { SignUp__SignUp_Response } from "server/src/resolvers/signUp/types";
 import { Routing } from "src/routing/routing";
+import { observable } from "mobx";
 
-export class SignUpRepository extends CustomRepository<ModelTypes> {
+export class SignUpRepository {
   @inject private signUpModule: SignUpModule;
+  @observable public isLoading: boolean = false;
   @inject private routing: Routing;
-  @observable public isLoading = false;
-
-  constructor(@inject mainRepository: MainRepository<ModelTypes>) {
-    super(mainRepository);
-  }
 
   public signUp(
     username: string,

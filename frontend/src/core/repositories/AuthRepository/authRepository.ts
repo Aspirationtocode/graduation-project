@@ -1,5 +1,4 @@
-import { CustomRepository, inject, MainRepository } from "modelsApi";
-import { ModelTypes } from "src/core/types/types";
+import { inject } from "src/utils/inject";
 import { observable } from "mobx";
 import {
   Auth__SignIn_Request,
@@ -10,22 +9,23 @@ import { SessionStorage } from "src/core/storage/sessionStorage";
 import { ApiBaseModule } from "src/api/apiBaseModule";
 import { Routing } from "src/routing/routing";
 import { User } from "server/src/models/user/types";
+import { CryptoUtils } from "src/crypto/CryptoUtils";
 
 export enum AuthStatus {
   NONE = "NONE",
   SUCCESS = "SUCCESS"
 }
 
-export class AuthRepository extends CustomRepository<ModelTypes> {
+export class AuthRepository {
   @inject private routing: Routing;
   @inject private authModule: AuthModule;
   @inject private apiBaseModule: ApiBaseModule;
   @inject private sessionStorage: SessionStorage;
   @observable protected status: AuthStatus = AuthStatus.NONE;
   @observable public profileUser: User;
+  @observable public ek: string;
   protected token: string | null = null;
-  constructor(@inject mainRepository: MainRepository<ModelTypes>) {
-    super(mainRepository);
+  constructor() {
     this.restoreSession();
   }
 
@@ -49,25 +49,28 @@ export class AuthRepository extends CustomRepository<ModelTypes> {
   private restoreSession() {
     const userSessionData = this.sessionStorage.getUserSessionData();
     if (userSessionData) {
-      const { user, token } = userSessionData;
+      const { user, token, ek } = userSessionData;
       this.setToken(token);
       this.setStatus(AuthStatus.SUCCESS);
       this.profileUser = user;
+      this.ek = ek;
     }
   }
-  private onSuccessAuth(response: Auth__SignIn_Response) {
+  private onSuccessAuth(response: Auth__SignIn_Response, ek: string) {
     const { token, user } = response;
     if (token) {
       this.profileUser = user;
+      this.ek = ek;
       this.setStatus(AuthStatus.SUCCESS);
-      this.sessionStorage.setUserSessionData({ token, user });
+      this.sessionStorage.setUserSessionData({ token, user, ek });
       this.setToken(token);
       this.routing.replace("/");
     }
   }
   public signIn(request: Auth__SignIn_Request): Promise<Auth__SignIn_Response> {
+    const ek = CryptoUtils.generateEK(request.password, request.username);
     return this.authModule.signIn(request).then(response => {
-      this.onSuccessAuth(response);
+      this.onSuccessAuth(response, ek);
       return response;
     });
   }

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { observer } from "mobx-react";
 import Modal from "@material-ui/core/Modal";
-import { inject } from "modelsApi";
+import { inject } from "src/utils/inject";
 import { ModalStore } from "src/core/stores/ModalStore";
 import { CFormFields } from "src/components/layoutComponents/CForm/CForm";
 import Dialog from "@material-ui/core/Dialog";
@@ -10,6 +10,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import { CInput } from "src/components/lib/CInput/CInput";
 import Button from "@material-ui/core/Button";
+import { LoginRepository } from "src/core/repositories/LoginRepository/loginRepository";
 
 interface CLoginModalState {
   username: string;
@@ -21,12 +22,13 @@ interface CLoginModalState {
 @observer
 export class CLoginModal extends React.Component<{}, CLoginModalState> {
   @inject private modalStore: ModalStore;
+  @inject private loginRepository: LoginRepository;
 
   state = {
-    username: "",
-    password: "",
-    label: "",
-    description: ""
+    username: "aspiretocode",
+    password: "ghrja",
+    label: "login label",
+    description: "login description"
   };
 
   render() {
@@ -67,12 +69,17 @@ export class CLoginModal extends React.Component<{}, CLoginModalState> {
           </DialogContent>
           <DialogActions>
             <Button onClick={this.modalStore.close}>Cancel</Button>
-            <Button>Add Login</Button>
+            <Button onClick={this.onAddLogin}>Add Login</Button>
           </DialogActions>
         </Dialog>
       </Modal>
     );
   }
+
+  private onAddLogin = () => {
+    const { username, password, label, description } = this.state;
+    this.loginRepository.createLogin(username, password, label, description);
+  };
 
   private onUsernameChange = (username: string) => {
     this.setState({

@@ -5,7 +5,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { Switch, Route, RouteComponentProps, Link } from "react-router-dom";
-import { inject } from "modelsApi";
+import { inject } from "src/utils/inject";
 import { AuthRepository } from "src/core/repositories/AuthRepository/authRepository";
 import Drawer from "@material-ui/core/Drawer";
 import { IconButton } from "@material-ui/core";

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { observer } from "mobx-react";
-import { inject } from "modelsApi";
+import { inject } from "src/utils/inject";
 import { ModalStore } from "src/core/stores/ModalStore";
 
 @observer

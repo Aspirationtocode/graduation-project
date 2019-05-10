@@ -21,6 +21,7 @@ export class AuthResolver {
           `No user with username ${username}`
         );
       }
+
       const isPasswordsMatch = user.password === signInRequest.password;
       if (isPasswordsMatch) {
         try {

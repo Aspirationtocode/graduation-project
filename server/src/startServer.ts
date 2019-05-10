@@ -4,6 +4,7 @@ import { buildSchema } from "type-graphql";
 import * as graphqlHTTP from "express-graphql";
 import { serverConfig } from "../configs/server/config";
 import { resolvers } from "./resolvers";
+import { authChecker } from "./auth/authChecker";
 const cors = require("cors");
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(cors());
 export function startServer() {
   buildSchema({
     resolvers,
+    authChecker,
     validate: false
   })
     .then(schema => {

@@ -11,6 +11,16 @@ export namespace CryptoUtils {
     return sjcl.codec.hex.fromBits(sjcl.hash.sha256.hash(ek));
   }
 
+  export function generateRandomKey(): string {
+    return sjcl.codec.hex.fromBits(
+      sjcl.misc.pbkdf2(
+        sjcl.random.randomWords(8),
+        sjcl.random.randomWords(2),
+        1000
+      )
+    );
+  }
+
   export function encrypt(plaintext: string, key: string): string {
     return (sjcl.encrypt(key as any, plaintext, {
       ks: 256

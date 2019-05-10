@@ -1,7 +1,7 @@
 import "./styles/common";
-import { initializeInject, InjectionMap, MainRepository } from "modelsApi";
 import renderRoot from "src/renderRoot";
+import { InjectionMap, initializeInject } from "src/utils/inject";
 
-initializeInject(new InjectionMap([[MainRepository, new MainRepository()]]));
+initializeInject(new InjectionMap([]));
 
 renderRoot();

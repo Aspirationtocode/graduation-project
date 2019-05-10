@@ -8,7 +8,7 @@ import {
 } from "src/components/layoutComponents/CForm/CForm";
 import Button from "@material-ui/core/Button";
 import { CInput } from "src/components/lib/CInput/CInput";
-import { inject } from "modelsApi";
+import { inject } from "src/utils/inject";
 import { AuthRepository } from "src/core/repositories/AuthRepository/authRepository";
 import { withSnackbar, WithSnackbarProps } from "notistack";
 import { BaseError } from "server/src/errors/baseError";

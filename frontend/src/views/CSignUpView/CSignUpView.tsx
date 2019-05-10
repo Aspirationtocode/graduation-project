@@ -8,7 +8,7 @@ import {
 } from "src/components/layoutComponents/CForm/CForm";
 import Button from "@material-ui/core/Button";
 import { CInput } from "src/components/lib/CInput/CInput";
-import { inject } from "modelsApi";
+import { inject } from "src/utils/inject";
 import { SignUpRepository } from "src/core/repositories/SignUpRepository/signUpRepository";
 import { SignUp__SignUp_Request } from "server/src/resolvers/signUp/types";
 import { Routing } from "src/routing/routing";

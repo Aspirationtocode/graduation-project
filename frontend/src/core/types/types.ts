@@ -1,1 +1,1 @@
-export type ModelTypes = "User";
+export type ModelTypes = "User" | "Login";

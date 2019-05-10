@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Route, Redirect } from "react-router";
 import { observer } from "mobx-react";
-import { inject } from "modelsApi";
+import { inject } from "src/utils/inject";
 import { AuthRepository } from "src/core/repositories/AuthRepository/authRepository";
 
 @observer

@@ -1,6 +1,7 @@
 import { default as axios, AxiosInstance, AxiosResponse } from "axios";
 import { ENV } from "src/environmentConfig";
 import { CommonError } from "server/src/errors/errors";
+import { isString } from "util";
 interface QueryParams {
   query: string;
 }
@@ -55,6 +56,13 @@ export abstract class ApiBaseModule {
         const graphqlError = this.getGraphqlError(response);
 
         if (graphqlError) {
+          if (isString(graphqlError)) {
+            const error = new CommonError(
+              CommonError.Status.SOMETHING_WRONG,
+              "Something wrong happened"
+            ).message;
+            return Promise.reject(JSON.parse(error));
+          }
           return Promise.reject(JSON.parse(graphqlError));
         } else {
           const error = new CommonError(

@@ -3,7 +3,7 @@ import { History, createHashHistory } from "history";
 import { Routing } from "src/routing/routing";
 import { syncHistoryWithStore } from "mobx-react-router";
 import { Router } from "react-router";
-import { inject } from "modelsApi";
+import { inject } from "src/utils/inject";
 import { CMainLayout } from "src/components/layoutComponents/CMainLayout/CMainLayout";
 
 interface CRouterProps {}

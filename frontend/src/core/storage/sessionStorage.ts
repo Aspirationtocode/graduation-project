@@ -8,6 +8,7 @@ enum SessionStorageKey {
 interface UserSessionData {
   token: string;
   user: User;
+  ek: string;
 }
 
 export class SessionStorage extends BaseStorage<"sessionStorage"> {
