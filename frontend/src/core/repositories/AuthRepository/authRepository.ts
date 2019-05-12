@@ -10,6 +10,7 @@ import { ApiBaseModule } from "src/api/apiBaseModule";
 import { Routing } from "src/routing/routing";
 import { User } from "server/src/models/user/types";
 import { CryptoUtils } from "src/crypto/CryptoUtils";
+import { MainRepository } from "src/core/repositories/MainRepository/mainRepository";
 
 export enum AuthStatus {
   NONE = "NONE",
@@ -19,12 +20,13 @@ export enum AuthStatus {
 export class AuthRepository {
   @inject private routing: Routing;
   @inject private authModule: AuthModule;
-  @inject private apiBaseModule: ApiBaseModule;
   @inject private sessionStorage: SessionStorage;
+  @inject private mainRepository: MainRepository;
+  @inject private apiBaseModule: ApiBaseModule;
   @observable protected status: AuthStatus = AuthStatus.NONE;
-  @observable public profileUser: User;
-  @observable public ek: string;
-  protected token: string | null = null;
+  public profileUser: User;
+  public ek: string;
+  public token: string | null = null;
   constructor() {
     this.restoreSession();
   }
@@ -35,31 +37,35 @@ export class AuthRepository {
 
   public setToken(token: string) {
     this.token = token;
-    this.updateAuthorizationHeader(token);
+    this.apiBaseModule.setAuthorizationToken(token);
   }
 
   public hasAuth(): boolean {
     return this.status === AuthStatus.SUCCESS;
   }
-  private updateAuthorizationHeader(token: string) {
-    this.apiBaseModule.setHeaders({
-      Authorization: token
-    });
-  }
+
   private restoreSession() {
     const userSessionData = this.sessionStorage.getUserSessionData();
     if (userSessionData) {
       const { user, token, ek } = userSessionData;
       this.setToken(token);
       this.setStatus(AuthStatus.SUCCESS);
-      this.profileUser = user;
+      this.profileUser = this.getProfileUser(user, ek);
       this.ek = ek;
     }
   }
+
+  private getProfileUser(user: User, ek: string) {
+    return {
+      ...user,
+      sec: CryptoUtils.decrypt(user.sec, ek)
+    };
+  }
+
   private onSuccessAuth(response: Auth__SignIn_Response, ek: string) {
     const { token, user } = response;
     if (token) {
-      this.profileUser = user;
+      this.profileUser = this.getProfileUser(user, ek);
       this.ek = ek;
       this.setStatus(AuthStatus.SUCCESS);
       this.sessionStorage.setUserSessionData({ token, user, ek });
@@ -78,5 +84,6 @@ export class AuthRepository {
     this.sessionStorage.removeUserSessionData();
     this.setStatus(AuthStatus.NONE);
     this.routing.replace("/signin");
+    this.mainRepository.clearRepositories();
   }
 }

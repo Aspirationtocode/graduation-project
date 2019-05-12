@@ -4,6 +4,7 @@ import { Omit } from "../../types";
 
 export interface DecryptedLogin extends Omit<Login, "data"> {
   data: DecryptedLoginData;
+  id: string;
 }
 
 export interface DecryptedLoginData {

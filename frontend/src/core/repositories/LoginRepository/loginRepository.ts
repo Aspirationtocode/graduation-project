@@ -1,53 +1,57 @@
 import { inject } from "src/utils/inject";
-import { AuthRepository } from "src/core/repositories/AuthRepository/authRepository";
-import { CryptoUtils } from "src/crypto/CryptoUtils";
-import { Crypto } from "assymetric-encryption";
 import { LoginModule } from "src/api/login/loginModule";
 import { Login__Create_Response } from "server/src/resolvers/login/types";
 import { BaseRepository } from "src/core/repositories/baseRepository";
-import { Login } from "server/src/models/login/types";
+import {
+  DecryptedLogin,
+  DecryptedLoginData
+} from "server/src/models/login/types";
+import { LoginsCrypto } from "src/crypto/LoginsCrypto";
+import { MainRepository } from "src/core/repositories/MainRepository/mainRepository";
 
-export class LoginRepository extends BaseRepository<Login> {
-  @inject private authRepository: AuthRepository;
+export class LoginRepository extends BaseRepository<DecryptedLogin> {
+  @inject private loginsCrypto: LoginsCrypto;
   @inject private loginModule: LoginModule;
-  constructor() {
+
+  constructor(@inject mainRepository: MainRepository) {
     super();
-    this.getModels();
+    mainRepository.registerRepository("loginRepository", this);
   }
 
   public createLogin(
-    username: string,
-    password: string,
-    label: string,
-    description: string
+    decryptedLoginData: DecryptedLoginData
   ): Promise<Login__Create_Response> {
-    const { profileUser } = this.authRepository;
-    const { pub } = profileUser;
-    const loginKey = CryptoUtils.generateRandomKey();
-    const decryptedLoginData = {
-      username,
-      password,
-      label,
-      description
-    };
-    const encryptedLoginData = CryptoUtils.encrypt(
-      JSON.stringify(decryptedLoginData),
-      loginKey
+    // 1. Generate login base key
+    const loginBaseKey = this.loginsCrypto.generateLoginBaseKey();
+    // 2. Encrypt login data with base key
+    const encryptedLoginData = this.loginsCrypto.encryptLoginData(
+      decryptedLoginData,
+      loginBaseKey
     );
-    const encryptedLoginKey = Crypto.encrypt(loginKey, pub);
+    // 3. Get login key by encrypting login base key
+    const loginKey = this.loginsCrypto.getLoginKey(loginBaseKey);
     return this.loginModule
       .create({
         data: encryptedLoginData,
-        key: encryptedLoginKey
+        key: loginKey
       })
       .then(response => {
+        const decryptedLogin = this.loginsCrypto.decryptLogin(
+          response.login,
+          response.loginKey
+        );
+        this.appendList(decryptedLogin);
         return response;
       });
   }
 
-  public getModels(): Promise<Login[]> {
+  public getModels(): Promise<DecryptedLogin[]> {
     return this.loginModule.getLogins().then(response => {
-      return response.logins;
+      const decryptedLogins = this.loginsCrypto.decryptLogins(
+        response.logins,
+        response.loginKeys
+      );
+      return decryptedLogins;
     });
   }
 }

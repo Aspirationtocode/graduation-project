@@ -12,10 +12,26 @@ import { LoginKeyModel, LoginKey } from "../../models/loginKey/types";
 
 @Resolver()
 export class LoginResolver {
-  @Query(returns => [Login])
-  public logins(): Promise<Login[]> {
-    return LoginModel.find().then(logins => {
-      return logins.map(login => ModelHelpers.getObject<Login>(login));
+  @Query(returns => Logins__Get_Response)
+  public getLogins(@Ctx() ctx: any): Promise<Logins__Get_Response> {
+    const userId = getUserIdFromContext(ctx);
+    return LoginKeyModel.find({ userId }).then(loginKeys => {
+      const pureLoginKeys = loginKeys.map(key =>
+        ModelHelpers.getObject<LoginKey>(key)
+      );
+      const pureLoginKeysLoginIds = pureLoginKeys.map(lk => lk.loginId);
+      return LoginModel.find({ _id: { $in: pureLoginKeysLoginIds } }).then(
+        logins => {
+          const filteredLogins = logins.map(login => {
+            return ModelHelpers.getObject<Login>(login);
+          });
+
+          return {
+            logins: filteredLogins,
+            loginKeys: pureLoginKeys
+          };
+        }
+      );
     });
   }
 

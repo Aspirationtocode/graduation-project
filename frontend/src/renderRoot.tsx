@@ -19,7 +19,7 @@ const rootContainer = document.getElementById("root");
 const entryComponent = (
   <JssProvider jss={jss} generateClassName={generateClassName}>
     <SnackbarProvider
-      maxSnack={3}
+      maxSnack={1}
       anchorOrigin={{
         vertical: "bottom",
         horizontal: "left"

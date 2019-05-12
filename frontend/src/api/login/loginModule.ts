@@ -4,7 +4,6 @@ import {
   Login__Create_Response,
   Logins__Get_Response
 } from "server/src/resolvers/login/types";
-import { Login } from "server/src/models/login/types";
 
 export class LoginModule extends ApiBaseModule {
   public create(
@@ -39,18 +38,23 @@ export class LoginModule extends ApiBaseModule {
   public getLogins(): Promise<Logins__Get_Response> {
     const query = `
     query {
-      logins {
-        id,
-        data
+      getLogins {
+        logins {
+          id,
+          data
+        },
+        loginKeys {
+          data,
+          loginId,
+          userId
+        }
       }
     }
     `;
     return this.sendQuery({
       query
     }).then(response => {
-      return {
-        logins: this.getData<Login[]>(response, "logins")
-      };
+      return this.getData<Logins__Get_Response>(response, "getLogins");
     });
   }
 }

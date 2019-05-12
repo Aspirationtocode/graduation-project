@@ -7,7 +7,7 @@ export module ModelHelpers {
     const pureObject = model.toObject({ getters: true, versionKey: false });
     const tempId = model._id;
     delete pureObject._id;
-    pureObject.id = tempId;
+    pureObject.id = tempId.toString();
     return pureObject;
   }
 }

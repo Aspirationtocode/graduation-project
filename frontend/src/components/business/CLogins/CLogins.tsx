@@ -19,11 +19,9 @@ export class CLogins extends React.Component {
     return (
       <CContent>
         <CContentHeader title={"Logins"}>
-          {this.loginRepository.isLoading && (
-            <IconButton color="inherit" onClick={this.handleAddLoginClick}>
-              <AddIcon />
-            </IconButton>
-          )}
+          <IconButton color="inherit" onClick={this.handleAddLoginClick}>
+            <AddIcon />
+          </IconButton>
         </CContentHeader>
         {this.renderLogins()}
       </CContent>
@@ -36,7 +34,7 @@ export class CLogins extends React.Component {
 
   private renderLogins() {
     return this.loginRepository.getList().map(login => {
-      return <div>{login.id}</div>;
+      return <div key={login.id}>{login.data.username}</div>;
     });
   }
 }

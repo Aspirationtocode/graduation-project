@@ -78,7 +78,16 @@ export class CLoginModal extends React.Component<{}, CLoginModalState> {
 
   private onAddLogin = () => {
     const { username, password, label, description } = this.state;
-    this.loginRepository.createLogin(username, password, label, description);
+    this.loginRepository
+      .createLogin({
+        username,
+        password,
+        label,
+        description
+      })
+      .then(() => {
+        this.modalStore.close();
+      });
   };
 
   private onUsernameChange = (username: string) => {

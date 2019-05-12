@@ -22,4 +22,6 @@ export class Login__Create_Response {
 export class Logins__Get_Response {
   @Field(type => [Login], { nullable: false })
   logins: Login[];
+  @Field(type => [LoginKey], { nullable: false })
+  loginKeys: LoginKey[];
 }

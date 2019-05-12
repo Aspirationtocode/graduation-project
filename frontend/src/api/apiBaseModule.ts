@@ -6,14 +6,7 @@ interface QueryParams {
   query: string;
 }
 
-interface AxiosHeaders {
-  [header: string]: string;
-}
-let headers = {};
-
-const baseHeaders: AxiosHeaders = {
-  contentType: "application/json"
-};
+let authorizationToken: string = null;
 
 export abstract class ApiBaseModule {
   protected api: AxiosInstance;
@@ -24,18 +17,8 @@ export abstract class ApiBaseModule {
     });
   }
 
-  private getHeaders() {
-    return {
-      ...baseHeaders,
-      ...headers
-    };
-  }
-
-  public setHeaders(newHeaders: AxiosHeaders) {
-    headers = {
-      ...newHeaders,
-      ...headers
-    };
+  public setAuthorizationToken(token: string) {
+    authorizationToken = token;
   }
 
   protected sendQuery(queryParams: QueryParams) {
@@ -46,7 +29,10 @@ export abstract class ApiBaseModule {
           query: queryParams.query
         },
         {
-          headers: this.getHeaders()
+          headers: {
+            contentType: "application/json",
+            Authorization: authorizationToken
+          }
         }
       )
       .then(response => {

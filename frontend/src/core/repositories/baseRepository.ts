@@ -1,7 +1,7 @@
 import { observable } from "mobx";
 
 export abstract class BaseRepository<T = {}> {
-  @observable public isLoading: boolean = false;
+  @observable public isLoading: boolean = null;
   @observable public list: T[] = [];
 
   public replaceList(newList: T[]) {
@@ -9,7 +9,7 @@ export abstract class BaseRepository<T = {}> {
   }
 
   public getList(): T[] {
-    if (!this.list.length) {
+    if (this.isLoading === null) {
       setImmediate(() => {
         this.isLoading = true;
         this.getModels()
@@ -40,5 +40,10 @@ export abstract class BaseRepository<T = {}> {
 
   public onStartAsyncAction() {
     this.isLoading = true;
+  }
+
+  public clearRepository() {
+    this.list = [];
+    this.isLoading = null;
   }
 }
