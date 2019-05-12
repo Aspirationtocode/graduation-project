@@ -28,3 +28,10 @@ export class CContentHeader extends React.Component<CContentHeaderProps> {
     );
   }
 }
+
+export class CContentBody extends React.Component {
+  render() {
+    const { children } = this.props;
+    return <div className={css("body")}>{children}</div>;
+  }
+}

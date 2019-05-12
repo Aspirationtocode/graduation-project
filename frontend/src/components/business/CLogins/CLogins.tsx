@@ -1,15 +1,22 @@
 import * as React from "react";
 import {
   CContent,
-  CContentHeader
+  CContentHeader,
+  CContentBody
 } from "src/components/layoutComponents/CContent/CContent";
 import AddIcon from "@material-ui/icons/Add";
-import IconButton from "@material-ui/core/IconButton";
+import List from "@material-ui/core/List";
 import { inject } from "src/utils/inject";
 import { ModalStore } from "src/core/stores/ModalStore";
 import { CLoginModal } from "src/components/business/modals/CLoginModal/CLoginModal";
 import { LoginRepository } from "src/core/repositories/LoginRepository/loginRepository";
 import { observer } from "mobx-react";
+import { DecryptedLogin } from "server/src/models/login/types";
+import Fab from "@material-ui/core/Fab";
+import * as classNames from "classnames/bind";
+import { CLogin } from "src/components/business/CLogin/CLogin";
+
+const css = classNames.bind(require("./CLogins.styl"));
 
 @observer
 export class CLogins extends React.Component {
@@ -18,12 +25,17 @@ export class CLogins extends React.Component {
   render() {
     return (
       <CContent>
-        <CContentHeader title={"Logins"}>
-          <IconButton color="inherit" onClick={this.handleAddLoginClick}>
+        <CContentHeader title={"User Logins"}>
+          <Fab
+            size="small"
+            color="secondary"
+            aria-label="Add"
+            onClick={this.handleAddLoginClick}
+          >
             <AddIcon />
-          </IconButton>
+          </Fab>
         </CContentHeader>
-        {this.renderLogins()}
+        <CContentBody>{this.renderLogins()}</CContentBody>
       </CContent>
     );
   }
@@ -32,9 +44,15 @@ export class CLogins extends React.Component {
     this.modalStore.open(<CLoginModal />);
   };
 
+  private renderLogin(login: DecryptedLogin) {
+    const { data } = login;
+    return <CLogin data={data} key={login.id} />;
+  }
+
   private renderLogins() {
-    return this.loginRepository.getList().map(login => {
-      return <div key={login.id}>{login.data.username}</div>;
+    const renderedLogins = this.loginRepository.getList().map(login => {
+      return this.renderLogin(login);
     });
+    return <List className={css("list")}>{renderedLogins}</List>;
   }
 }
