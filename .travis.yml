@@ -3,6 +3,7 @@ node_js:
   - node
 script:
   - npm run frontend:build
+    rm -rf node_modules
 deploy:
   - provider: pages
     skip_cleanup: true
