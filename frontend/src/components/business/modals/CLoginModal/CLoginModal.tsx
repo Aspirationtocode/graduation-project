@@ -25,10 +25,10 @@ export class CLoginModal extends React.Component<{}, CLoginModalState> {
   @inject private loginRepository: LoginRepository;
 
   state = {
-    username: "aspiretocode",
-    password: "ghrja",
-    label: "login label",
-    description: "login description"
+    username: "",
+    password: "",
+    label: "",
+    description: ""
   };
 
   render() {

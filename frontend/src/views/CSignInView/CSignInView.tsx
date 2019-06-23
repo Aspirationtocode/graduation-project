@@ -26,8 +26,8 @@ interface CSignInViewProps extends WithSnackbarProps {}
 class CSignInView extends React.Component<CSignInViewProps, CSignInViewState> {
   @inject private authRepository: AuthRepository;
   state = {
-    username: "aspiretocode",
-    password: "VeryStrongPassword"
+    username: "",
+    password: ""
   };
 
   render() {

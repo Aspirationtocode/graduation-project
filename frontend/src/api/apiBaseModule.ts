@@ -40,22 +40,25 @@ export abstract class ApiBaseModule {
       })
       .catch(response => {
         const graphqlError = this.getGraphqlError(response);
-
-        if (graphqlError) {
-          if (isString(graphqlError)) {
+        try {
+          return Promise.reject(JSON.parse(graphqlError));
+        } catch {
+          if (graphqlError) {
+            if (isString(graphqlError)) {
+              const error = new CommonError(
+                CommonError.Status.SOMETHING_WRONG,
+                "Something wrong happened"
+              ).message;
+              return Promise.reject(JSON.parse(error));
+            }
+            return Promise.reject(JSON.parse(graphqlError));
+          } else {
             const error = new CommonError(
               CommonError.Status.SOMETHING_WRONG,
               "Something wrong happened"
             ).message;
             return Promise.reject(JSON.parse(error));
           }
-          return Promise.reject(JSON.parse(graphqlError));
-        } else {
-          const error = new CommonError(
-            CommonError.Status.SOMETHING_WRONG,
-            "Something wrong happened"
-          ).message;
-          return Promise.reject(JSON.parse(error));
         }
       });
   }

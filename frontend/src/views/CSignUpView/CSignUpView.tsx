@@ -25,9 +25,9 @@ class CSignUpView extends React.Component<CSignUpViewProps, CSignUpViewState> {
   @inject private signUpRepository: SignUpRepository;
   @inject private routing: Routing;
   state = {
-    username: "aspiretocode",
-    password: "VeryStrongPassword",
-    fullName: "Evgeniy Kulazhskiy"
+    username: "",
+    password: "",
+    fullName: ""
   };
 
   render() {

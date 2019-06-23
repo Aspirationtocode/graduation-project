@@ -12,6 +12,7 @@ import { LoginKeyModel, LoginKey } from "../../models/loginKey/types";
 
 @Resolver()
 export class LoginResolver {
+  @Authorized()
   @Query(returns => Logins__Get_Response)
   public getLogins(@Ctx() ctx: any): Promise<Logins__Get_Response> {
     const userId = getUserIdFromContext(ctx);

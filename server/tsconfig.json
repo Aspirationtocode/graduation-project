@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": { "*": ["types/*"] },
     "forceConsistentCasingInFileNames": true,
     "lib": ["es7", "esnext.asynciterable"],
     "module": "commonjs",
