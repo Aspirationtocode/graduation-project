@@ -84,7 +84,7 @@
     "express-graphql": "^0.8.0",
     "graphql": "^14.3.0",
     "history": "^4.9.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "jss": "^9.8.7",
     "mobx-react-router": "^4.0.7",
     "mongoose": "^5.5.1",
